@@ -38624,8 +38624,10 @@ var import_dotenv = __toESM(require_main());
 import { PrismaClient } from "@prisma/client";
 import_dotenv.default.config();
 var globalForPrisma = globalThis;
+var DEFAULT_DATABASE_URL = "mysql://a95759_chowkichiwadi:P%40ssw0rd112233@mysql9001.site4now.net:3306/db_a95759_chowkichiwadi?charset=utf8mb4&collation=utf8mb4_unicode_ci";
+var dbUrl = process.env.DATABASE_URL || DEFAULT_DATABASE_URL;
 var prisma = globalForPrisma.prisma ?? new PrismaClient({
-  ...process.env.DATABASE_URL ? { datasourceUrl: process.env.DATABASE_URL } : {},
+  datasourceUrl: dbUrl,
   log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"]
 });
 if (process.env.NODE_ENV !== "production") {
@@ -43070,6 +43072,7 @@ async function getPublicMandalInfo(req, res) {
       latestMeeting
     });
   } catch (error) {
+    console.error("Failed to fetch public mandal info:", error);
     return sendError(res, "Failed to fetch public mandal info", 500);
   }
 }
@@ -43113,6 +43116,7 @@ async function getPublicMembers(req, res) {
     });
     return sendSuccess(res, members);
   } catch (error) {
+    console.error("Failed to fetch members:", error);
     return sendError(res, "Failed to fetch members", 500);
   }
 }
@@ -43144,6 +43148,7 @@ async function getPublicFinancialSummary(req, res) {
       totalExpenses: overallBalance.totalExpenses
     });
   } catch (error) {
+    console.error("Failed to fetch financial summary:", error);
     return sendError(res, "Failed to fetch financial summary", 500);
   }
 }
@@ -43178,6 +43183,7 @@ async function getPublicEvents(req, res) {
     });
     return sendSuccess(res, formatted);
   } catch (error) {
+    console.error("Failed to fetch events:", error);
     return sendError(res, "Failed to fetch events", 500);
   }
 }
@@ -43216,6 +43222,7 @@ async function getPublicExpenses(req, res) {
     });
     return sendSuccess(res, expenses);
   } catch (error) {
+    console.error("Failed to fetch expenses:", error);
     return sendError(res, "Failed to fetch expenses", 500);
   }
 }
@@ -43238,6 +43245,7 @@ async function getPublicMeetings(req, res) {
     });
     return sendSuccess(res, meetings);
   } catch (error) {
+    console.error("Failed to fetch meetings:", error);
     return sendError(res, "Failed to fetch meetings", 500);
   }
 }

@@ -81,6 +81,7 @@ export async function getPublicMandalInfo(req: Request, res: Response) {
       latestMeeting,
     });
   } catch (error) {
+    console.error('Failed to fetch public mandal info:', error);
     return sendError(res, 'Failed to fetch public mandal info', 500);
   }
 }
@@ -129,6 +130,7 @@ export async function getPublicMembers(req: Request, res: Response) {
 
     return sendSuccess(res, members);
   } catch (error) {
+    console.error('Failed to fetch members:', error);
     return sendError(res, 'Failed to fetch members', 500);
   }
 }
@@ -167,6 +169,7 @@ export async function getPublicFinancialSummary(req: Request, res: Response) {
       totalExpenses: overallBalance.totalExpenses,
     });
   } catch (error) {
+    console.error('Failed to fetch financial summary:', error);
     return sendError(res, 'Failed to fetch financial summary', 500);
   }
 }
@@ -204,6 +207,7 @@ export async function getPublicEvents(req: Request, res: Response) {
 
     return sendSuccess(res, formatted);
   } catch (error) {
+    console.error('Failed to fetch events:', error);
     return sendError(res, 'Failed to fetch events', 500);
   }
 }
@@ -248,6 +252,7 @@ export async function getPublicExpenses(req: Request, res: Response) {
 
     return sendSuccess(res, expenses);
   } catch (error) {
+    console.error('Failed to fetch expenses:', error);
     return sendError(res, 'Failed to fetch expenses', 500);
   }
 }
@@ -272,6 +277,7 @@ export async function getPublicMeetings(req: Request, res: Response) {
 
     return sendSuccess(res, meetings);
   } catch (error) {
+    console.error('Failed to fetch meetings:', error);
     return sendError(res, 'Failed to fetch meetings', 500);
   }
 }

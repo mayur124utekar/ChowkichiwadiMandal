@@ -8,11 +8,21 @@ export const api = axios.create({
   },
 });
 
+// Request interceptor to attach JWT from localStorage if present
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('chowkichiwadi_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Response interceptor to format errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     const message = error.response?.data?.error?.message || error.message || 'An error occurred';
+    console.warn(`[API Error ${error.config?.url}]:`, message);
     return Promise.reject(new Error(message));
   }
 );

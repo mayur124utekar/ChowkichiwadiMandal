@@ -33,6 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (credentials: { email: string; password: string }) => {
     const data = await AuthAPI.login(credentials);
+    if (data.token) {
+      localStorage.setItem('chowkichiwadi_token', data.token);
+    }
     setUser(data.user);
   };
 
@@ -40,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await AuthAPI.logout();
     } finally {
+      localStorage.removeItem('chowkichiwadi_token');
       setUser(null);
     }
   };

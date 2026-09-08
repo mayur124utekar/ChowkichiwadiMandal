@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import Cropper from 'react-easy-crop';
+import EasyCrop from 'react-easy-crop';
 import { ZoomIn, ZoomOut, RotateCw, Check, X, Sparkles } from 'lucide-react';
 import { Area, getCroppedImg } from '../utils/cropImage.js';
+
+// Safe Cropper component resolution for Vite/ESM
+const Cropper = ((EasyCrop as any).default || EasyCrop) as typeof EasyCrop;
 
 interface ImageCropModalProps {
   imageSrc: string;
@@ -72,8 +75,8 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-lg w-full flex flex-col border border-slate-100">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-lg w-full flex flex-col border border-slate-100 z-[100000]">
         
         {/* Header */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">

@@ -1,0 +1,4 @@
+Server: mysql9001.site4now.net
+Database: db_a95759_chowkichiwadi
+User ID: a95759_chowkichiwadi
+Password: P@ssw0rd112233

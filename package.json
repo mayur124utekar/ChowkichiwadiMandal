@@ -1,0 +1,26 @@
+{
+  "name": "chowkichiwadi-adhyatm-gramastha-mandal",
+  "version": "1.0.0",
+  "description": "Production Web Application for Chowkichiwadi Adhyatm Gramastha Mandal, Sakhar (Registration No: MH/013/2020/RATNA)",
+  "scripts": {
+    "dev:server": "npm.cmd --prefix server run dev",
+    "dev:client": "npm.cmd --prefix client run dev",
+    "build:server": "npm.cmd --prefix server run build",
+    "build:client": "npm.cmd --prefix client run build",
+    "build": "npm.cmd run build:server && npm.cmd run build:client",
+    "start": "node server/dist/index.js",
+    "prisma:seed": "npm.cmd --prefix server run prisma:seed",
+    "prisma:push": "npm.cmd --prefix server run prisma:push"
+  },
+  "keywords": [
+    "chowkichiwadi",
+    "mandal",
+    "marathi",
+    "gramastha",
+    "sai-baba",
+    "finance",
+    "vargani"
+  ],
+  "author": "Chowkichiwadi Mandal",
+  "license": "ISC"
+}

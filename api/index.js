@@ -87642,6 +87642,18 @@ var StorageService = class {
         });
         return blob.url;
       } catch (error) {
+        if (error?.message?.includes("private store")) {
+          try {
+            const privateBlob = await put(pathname, file.buffer, {
+              access: "private",
+              contentType: file.mimetype,
+              token: process.env.BLOB_READ_WRITE_TOKEN
+            });
+            return privateBlob.downloadUrl || privateBlob.url;
+          } catch (pErr) {
+            console.error("Private blob upload failed:", pErr);
+          }
+        }
         console.error("Vercel Blob upload failed, falling back to local/tmp disk:", error);
       }
     }

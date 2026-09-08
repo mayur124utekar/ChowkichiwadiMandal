@@ -27,11 +27,13 @@ import { AdminMeetings } from './pages/admin/AdminMeetings.js';
 import { AdminReports } from './pages/admin/AdminReports.js';
 import { AdminSettings } from './pages/admin/AdminSettings.js';
 import { AdminAuditLogs } from './pages/admin/AdminAuditLogs.js';
+import { ScrollToTop } from './components/ScrollToTop.js';
 
 export function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Public Marathi Portal */}
           <Route path="/" element={<PublicLayout />}>

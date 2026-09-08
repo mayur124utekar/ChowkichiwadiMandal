@@ -15,6 +15,7 @@ import {
 import { MembersAPI } from '../../api/client.js';
 import { Member, Group, Position } from '../../types/index.js';
 import { MemberAvatar } from '../../components/MemberAvatar.js';
+import { ImageCropModal } from '../../components/ImageCropModal.js';
 
 export const AdminMembers: React.FC = () => {
   const [members, setMembers] = useState<Member[]>([]);
@@ -28,6 +29,9 @@ export const AdminMembers: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     fullNameMarathi: '',
@@ -72,6 +76,7 @@ export const AdminMembers: React.FC = () => {
   const handleOpenAddModal = () => {
     setEditingMember(null);
     setPhotoFile(null);
+    setPhotoPreview(null);
     setFormData({
       fullName: '',
       fullNameMarathi: '',
@@ -91,6 +96,7 @@ export const AdminMembers: React.FC = () => {
   const handleOpenEditModal = (member: Member) => {
     setEditingMember(member);
     setPhotoFile(null);
+    setPhotoPreview(member.photoUrl || null);
     setFormData({
       fullName: member.fullName,
       fullNameMarathi: member.fullNameMarathi || '',
@@ -105,6 +111,25 @@ export const AdminMembers: React.FC = () => {
     });
     setErrorMsg('');
     setIsModalOpen(true);
+  };
+
+  const handlePhotoFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCropImageSrc(reader.result as string);
+        setIsCropModalOpen(true);
+      };
+      reader.readAsDataURL(file);
+      // Reset input value so same file can be re-selected if needed
+      e.target.value = '';
+    }
+  };
+
+  const handleCropComplete = (croppedFile: File, previewUrl: string) => {
+    setPhotoFile(croppedFile);
+    setPhotoPreview(previewUrl);
   };
 
   const handleSaveMember = async (e: React.FormEvent) => {
@@ -399,13 +424,29 @@ export const AdminMembers: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Member Photo (Optional)</label>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
-                  className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-                />
+                <label className="block font-bold text-slate-700 mb-1">Member Photo (सदस्य फोटो)</label>
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-400 p-0.5 bg-orange-50 flex-shrink-0 flex items-center justify-center">
+                    {photoPreview ? (
+                      <img src={photoPreview} alt="Preview" className="w-full h-full object-cover rounded-full" />
+                    ) : (
+                      <span className="text-orange-600 font-bold text-xl">
+                        {(formData.fullNameMarathi || formData.fullName || 'म').charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/jpg"
+                      onChange={handlePhotoFileSelect}
+                      className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
+                    />
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      फोटो निवडल्यावर आपोआप <strong>क्रॉप व ऑप्टिमायझेशन (WebP)</strong> विंडो उघडेल.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -460,6 +501,21 @@ export const AdminMembers: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Image Crop & Optimize Modal */}
+      {cropImageSrc && (
+        <ImageCropModal
+          isOpen={isCropModalOpen}
+          imageSrc={cropImageSrc}
+          aspectRatio={1}
+          cropShape="round"
+          title="सदस्य फोटो क्रॉप व ऑप्टिमाइझ करा"
+          maxWidth={500}
+          maxHeight={500}
+          onClose={() => setIsCropModalOpen(false)}
+          onCropComplete={handleCropComplete}
+        />
       )}
     </div>
   );

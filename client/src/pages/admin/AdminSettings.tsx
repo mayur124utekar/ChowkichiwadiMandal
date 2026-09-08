@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Settings, Save, AlertCircle, CheckCircle2, Upload, Shield } from 'lucide-react';
 import { SettingsAPI } from '../../api/client.js';
 import { SiteSettings } from '../../types/index.js';
+import { ImageCropModal } from '../../components/ImageCropModal.js';
 
 export const AdminSettings: React.FC = () => {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     mandalName: '',
@@ -237,17 +241,33 @@ export const AdminSettings: React.FC = () => {
 
           {/* Logo Upload Preview */}
           <div className="pt-2">
-            <label className="block font-bold text-slate-700 mb-1">Mandal Logo Upload</label>
+            <label className="block font-bold text-slate-700 mb-1">Mandal Logo Upload (मंडळ लोगो)</label>
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-500 p-0.5 bg-white flex-shrink-0">
-                <img src={settings?.logoUrl || '/logo.jpeg'} alt="Logo" className="w-full h-full object-contain rounded-full" />
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-500 p-0.5 bg-white flex-shrink-0 flex items-center justify-center">
+                <img src={logoPreview || settings?.logoUrl || '/logo.jpeg'} alt="Logo" className="w-full h-full object-contain rounded-full" />
               </div>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
-                className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-              />
+              <div className="flex-1">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/jpg"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        setCropImageSrc(reader.result as string);
+                        setIsCropModalOpen(true);
+                      };
+                      reader.readAsDataURL(file);
+                      e.target.value = '';
+                    }
+                  }}
+                  className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  लोगो निवडल्यावर आपोआप <strong>क्रॉप व कॉम्प्रेस (WebP)</strong> विंडो उघडेल.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -350,6 +370,24 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
       </form>
+
+      {/* Image Crop & Optimize Modal for Logo */}
+      {cropImageSrc && (
+        <ImageCropModal
+          isOpen={isCropModalOpen}
+          imageSrc={cropImageSrc}
+          aspectRatio={1}
+          cropShape="round"
+          title="मंडळ लोगो क्रॉप व ऑप्टिमाइझ करा"
+          maxWidth={400}
+          maxHeight={400}
+          onClose={() => setIsCropModalOpen(false)}
+          onCropComplete={(croppedFile, previewUrl) => {
+            setLogoFile(croppedFile);
+            setLogoPreview(previewUrl);
+          }}
+        />
+      )}
     </div>
   );
 };

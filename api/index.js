@@ -29245,9 +29245,13 @@ var import_jsonwebtoken = __toESM(require_jsonwebtoken());
 
 // server/src/config/db.ts
 import { PrismaClient } from "@prisma/client";
-var prisma = new PrismaClient({
+var globalForPrisma = globalThis;
+var prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"]
 });
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
 
 // server/src/utils/response.ts
 function sendSuccess(res, data, message = "Operation completed successfully", statusCode = 200) {
@@ -35138,8 +35142,10 @@ if (fs2.existsSync(clientDistDir)) {
 }
 app.use("/", apiRouter);
 app.use(errorHandler);
+var app_default = app;
 export {
-  app
+  app,
+  app_default as default
 };
 /*! Bundled license information:
 

@@ -1,0 +1,354 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum ContributorType {
+  MEMBER
+  OUTSIDE_PERSON
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  BANK_TRANSFER
+  CHEQUE
+  OTHER
+}
+
+enum RecordStatus {
+  DRAFT
+  CONFIRMED
+  VOIDED
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum SourceType {
+  MONTHLY_CONTRIBUTION
+  FESTIVAL_CONTRIBUTION
+  OTHER_INCOME
+  EXPENSE
+  OPENING_BALANCE
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model AdminUser {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(150)
+  email        String    @unique @db.VarChar(191)
+  passwordHash String    @db.VarChar(255)
+  role         Role      @default(ADMIN)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+model Group {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(100)
+  nameMarathi  String    @db.VarChar(150)
+  code         String    @unique @db.VarChar(50)
+  description  String?   @db.Text
+  displayOrder Int       @default(0)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  members      Member[]
+  positions    Position[]
+
+  @@map("groups")
+}
+
+model Position {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(100)
+  nameMarathi  String    @db.VarChar(150)
+  groupId      Int?
+  group        Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  displayOrder Int       @default(0)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  members      Member[]
+
+  @@index([groupId])
+  @@map("positions")
+}
+
+model Member {
+  id                 Int       @id @default(autoincrement())
+  groupId            Int
+  group              Group     @relation(fields: [groupId], references: [id])
+  positionId         Int?
+  position           Position? @relation(fields: [positionId], references: [id], onDelete: SetNull)
+  fullName           String    @db.VarChar(150)
+  fullNameMarathi    String?   @db.VarChar(150)
+  photoUrl           String?   @db.VarChar(500)
+  mobileNumber       String?   @db.VarChar(30)
+  joiningDate        DateTime? @db.Date
+  bio                String?   @db.Text
+  bioMarathi         String?   @db.Text
+  displayOrder       Int       @default(0)
+  isActive           Boolean   @default(true)
+  isPublic           Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deletedAt          DateTime?
+  deletedBy          Int?
+
+  monthlyContributions  MonthlyContribution[]
+  festivalContributions FestivalContribution[]
+
+  @@index([groupId])
+  @@index([positionId])
+  @@index([isActive])
+  @@index([isPublic])
+  @@map("members")
+}
+
+model MonthlyContribution {
+  id                 Int             @id @default(autoincrement())
+  memberId           Int?
+  member             Member?         @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  contributorName    String          @db.VarChar(150)
+  contributorType    ContributorType @default(MEMBER)
+  groupId            Int?
+  amount             Decimal         @db.Decimal(12, 2)
+  contributionMonth  Int
+  contributionYear   Int
+  paymentDate        DateTime        @db.Date
+  paymentMethod      PaymentMethod   @default(CASH)
+  receiptNumber      String?         @unique @db.VarChar(100)
+  notes              String?         @db.Text
+  status             RecordStatus    @default(CONFIRMED)
+  isPublic           Boolean         @default(true)
+  createdBy          Int?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+  deletedBy          Int?
+  deletionReason     String?         @db.VarChar(255)
+
+  @@index([memberId])
+  @@index([contributionMonth, contributionYear])
+  @@index([paymentDate])
+  @@index([status])
+  @@map("monthly_contributions")
+}
+
+model Event {
+  id                 Int                    @id @default(autoincrement())
+  name               String                 @db.VarChar(150)
+  nameMarathi        String                 @db.VarChar(150)
+  description        String?                @db.Text
+  descriptionMarathi String?                @db.Text
+  eventDate          DateTime               @db.Date
+  startDate          DateTime?              @db.Date
+  endDate            DateTime?              @db.Date
+  year               Int
+  targetAmount       Decimal?               @db.Decimal(12, 2)
+  status             EventStatus            @default(UPCOMING)
+  bannerUrl          String?                @db.VarChar(500)
+  isPublic           Boolean                @default(true)
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  contributions      FestivalContribution[]
+
+  @@index([year])
+  @@index([status])
+  @@index([isPublic])
+  @@map("events")
+}
+
+model FestivalContribution {
+  id                 Int             @id @default(autoincrement())
+  eventId            Int
+  event              Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  memberId           Int?
+  member             Member?         @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  contributorName    String          @db.VarChar(150)
+  contributorType    ContributorType @default(MEMBER)
+  amount             Decimal         @db.Decimal(12, 2)
+  paymentDate        DateTime        @db.Date
+  paymentMethod      PaymentMethod   @default(CASH)
+  receiptNumber      String?         @unique @db.VarChar(100)
+  notes              String?         @db.Text
+  status             RecordStatus    @default(CONFIRMED)
+  isPublic           Boolean         @default(true)
+  createdBy          Int?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+  deletedBy          Int?
+  deletionReason     String?         @db.VarChar(255)
+
+  @@index([eventId])
+  @@index([memberId])
+  @@index([paymentDate])
+  @@index([status])
+  @@map("festival_contributions")
+}
+
+model ExpenseCategory {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(100)
+  nameMarathi  String    @db.VarChar(150)
+  description  String?   @db.Text
+  displayOrder Int       @default(0)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  expenses     Expense[]
+
+  @@map("expense_categories")
+}
+
+model Expense {
+  id                 Int             @id @default(autoincrement())
+  categoryId         Int
+  category           ExpenseCategory @relation(fields: [categoryId], references: [id])
+  title              String          @db.VarChar(200)
+  titleMarathi       String?         @db.VarChar(200)
+  description        String?         @db.Text
+  amount             Decimal         @db.Decimal(12, 2)
+  expenseDate        DateTime        @db.Date
+  paymentMethod      PaymentMethod   @default(CASH)
+  vendorName         String?         @db.VarChar(150)
+  billNumber         String?         @db.VarChar(100)
+  receiptUrl         String?         @db.VarChar(500)
+  notes              String?         @db.Text
+  status             RecordStatus    @default(CONFIRMED)
+  isPublic           Boolean         @default(true)
+  createdBy          Int?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+  deletedBy          Int?
+  deletionReason     String?         @db.VarChar(255)
+
+  @@index([categoryId])
+  @@index([expenseDate])
+  @@index([status])
+  @@map("expenses")
+}
+
+model FinancialTransaction {
+  id              Int             @id @default(autoincrement())
+  transactionType TransactionType
+  sourceType      SourceType
+  sourceId        Int?
+  amount          Decimal         @db.Decimal(12, 2)
+  transactionDate DateTime        @db.Date
+  description     String          @db.VarChar(255)
+  paymentMethod   PaymentMethod?
+  status          RecordStatus    @default(CONFIRMED)
+  createdBy       Int?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([transactionDate])
+  @@index([transactionType])
+  @@index([sourceType, sourceId])
+  @@index([status])
+  @@map("financial_transactions")
+}
+
+model Meeting {
+  id                   Int       @id @default(autoincrement())
+  meetingTitle         String    @db.VarChar(200)
+  meetingTitleMarathi  String    @db.VarChar(200)
+  meetingDate          DateTime  @db.Date
+  location             String    @db.VarChar(200)
+  description          String?   @db.Text
+  descriptionMarathi   String?   @db.Text
+  agenda               String?   @db.Text
+  agendaMarathi        String?   @db.Text
+  decisions            String?   @db.Text
+  decisionsMarathi     String?   @db.Text
+  attendanceCount      Int?
+  minutesFileUrl       String?   @db.VarChar(500)
+  photos               String?   @db.Text
+  isPublic             Boolean   @default(true)
+  createdBy            Int?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([meetingDate])
+  @@index([isPublic])
+  @@map("meetings")
+}
+
+model SiteSettings {
+  id                           Int      @id @default(1)
+  mandalName                   String   @default("Chowkichiwadi Adhyatm Gramastha Mandal") @db.VarChar(200)
+  mandalNameMarathi            String   @default("चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ - साखर") @db.VarChar(200)
+  regNumber                    String   @default("MH/013/2020/RATNA") @db.VarChar(100)
+  regNumberMarathi             String   @default("महाराष्ट्र/०१३/२०२०/रत्ना. (महाराष्ट्र राज्य)") @db.VarChar(100)
+  address                      String   @default("Sakhar Chowkichiwadi, Tal. Khed, Dist. Ratnagiri") @db.VarChar(255)
+  addressMarathi               String   @default("साखर चौकीचीवाडी, ता. खेड, जि. रत्नागिरी") @db.VarChar(255)
+  primaryPhone                 String?  @db.VarChar(30)
+  secondaryPhone               String?  @db.VarChar(30)
+  email                        String?  @db.VarChar(100)
+  logoUrl                      String?  @default("/uploads/branding/logo.jpeg") @db.VarChar(500)
+  mainImageUrl                 String?  @db.VarChar(500)
+  primaryColor                 String   @default("#F97316") @db.VarChar(20)
+  monthlyTargetAmount          Decimal  @default(200.00) @db.Decimal(12, 2)
+  openingBalance               Decimal  @default(0.00) @db.Decimal(12, 2)
+  showMonthlySummaryPublicly   Boolean  @default(true)
+  showFestivalSummaryPublicly  Boolean  @default(true)
+  showExpenseListPublicly      Boolean  @default(true)
+  showMemberNamesPublicly      Boolean  @default(true)
+  showContributorNamesPublicly Boolean  @default(false)
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model AuditLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       AdminUser? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String    @db.VarChar(100)
+  entityType String    @db.VarChar(100)
+  entityId   Int?
+  oldValues  String?   @db.Text
+  newValues  String?   @db.Text
+  ipAddress  String?   @db.VarChar(50)
+  userAgent  String?   @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

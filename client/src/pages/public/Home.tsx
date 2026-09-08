@@ -113,9 +113,12 @@ export const Home: React.FC = () => {
                 <div className="relative bg-white rounded-3xl p-6 shadow-2xl border-4 border-orange-200/80 flex flex-col items-center justify-center text-center space-y-4">
                   <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden border-4 border-orange-500 shadow-md p-1 bg-white">
                     <img
-                      src={data?.settings?.logoUrl || '/logo.jpeg'}
-                      alt="मंडळ लोगो"
-                      className="w-full h-full object-contain rounded-full"
+                      src={data?.settings?.logoUrl || '/logo.png'}
+                      alt="चौकीचीवाडी मंडळ लोगो"
+                      className="w-full h-full object-contain rounded-full shadow"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/logo.png';
+                      }}
                     />
                   </div>
                   <div className="bg-orange-50 px-4 py-2 rounded-xl border border-orange-200 w-full">

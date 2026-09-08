@@ -16,7 +16,7 @@ export const PublicFooter: React.FC<Props> = ({ settings }) => {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-white p-0.5 border border-orange-400">
-                <img src={settings?.logoUrl || '/logo.jpeg'} alt="Logo" className="w-full h-full object-contain rounded-full" />
+                <img src={settings?.logoUrl || '/logo.png'} alt="Logo" className="w-full h-full object-contain rounded-full" />
               </div>
               <div>
                 <h3 className="font-bold text-base text-orange-400">चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ</h3>

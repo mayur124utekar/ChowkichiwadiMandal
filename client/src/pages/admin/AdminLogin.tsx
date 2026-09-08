@@ -35,7 +35,7 @@ export const AdminLogin: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
         <div className="text-center space-y-3">
           <div className="inline-flex w-20 h-20 rounded-full overflow-hidden border-2 border-orange-500 shadow-xl bg-white p-1 mb-2">
-            <img src="/logo.jpeg" alt="Logo" className="w-full h-full object-contain rounded-full" />
+            <img src="/logo.png" alt="Logo" className="w-full h-full object-contain rounded-full" />
           </div>
           <h2 className="text-2xl font-extrabold text-white">Chowkichiwadi Mandal</h2>
           <p className="text-xs text-orange-400 font-semibold tracking-wider uppercase">

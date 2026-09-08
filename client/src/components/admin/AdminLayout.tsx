@@ -63,7 +63,7 @@ export const AdminLayout: React.FC = () => {
         {/* Brand */}
         <div className="p-5 border-b border-slate-800 flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full overflow-hidden bg-white p-0.5 border border-orange-500 flex-shrink-0">
-            <img src="/logo.jpeg" alt="Logo" className="w-full h-full object-contain rounded-full" />
+            <img src="/logo.png" alt="Logo" className="w-full h-full object-contain rounded-full" />
           </div>
           <div className="overflow-hidden">
             <h1 className="font-bold text-sm text-white truncate">चौकीचीवाडी मंडळ</h1>
@@ -165,7 +165,7 @@ export const AdminLayout: React.FC = () => {
             <div className="relative flex-1 flex flex-col max-w-xs w-full bg-slate-900 text-slate-200">
               <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <img src="/logo.jpeg" alt="Logo" className="w-8 h-8 rounded-full" />
+                  <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full" />
                   <span className="font-bold text-white text-sm">Chowkichiwadi Admin</span>
                 </div>
                 <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">

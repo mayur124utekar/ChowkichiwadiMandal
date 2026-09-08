@@ -10,17 +10,17 @@ export const GalleryPage: React.FC = () => {
     {
       title: 'मंडळाचा अधिकृत लोगो व प्रतिष्ठापना',
       desc: 'श्री साईबाबा कृपाशीर्वाद',
-      url: settings?.logoUrl || '/logo.jpeg',
+      url: settings?.logoUrl || '/logo.png',
     },
     {
       title: 'श्री साईबाबा पालखी सोहळा व महाप्रसाद',
       desc: 'ग्रामस्थ महाप्रसाद व भजन सोहळा',
-      url: settings?.logoUrl || '/logo.jpeg',
+      url: settings?.logoUrl || '/logo.png',
     },
     {
       title: 'श्री गणेशोत्सव मंडप व आरती',
       desc: 'युवा ग्रुप व ग्रामस्थ गणेशोत्सव',
-      url: settings?.logoUrl || '/logo.jpeg',
+      url: settings?.logoUrl || '/logo.png',
     }
   ];
 

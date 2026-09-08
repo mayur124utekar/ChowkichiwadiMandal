@@ -60,11 +60,11 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500 shadow-md bg-white flex-shrink-0 flex items-center justify-center p-0.5">
               <img
-                src={settings?.logoUrl || '/logo.jpeg'}
+                src={settings?.logoUrl || '/logo.png'}
                 alt="चौकीचीवाडी मंडळ लोगो"
                 className="w-full h-full object-contain rounded-full group-hover:scale-105 transition-transform"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/logo.jpeg';
+                  (e.target as HTMLImageElement).src = '/logo.png';
                 }}
               />
             </div>

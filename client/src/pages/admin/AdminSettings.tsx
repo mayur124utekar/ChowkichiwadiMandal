@@ -244,7 +244,7 @@ export const AdminSettings: React.FC = () => {
             <label className="block font-bold text-slate-700 mb-1">Mandal Logo Upload (मंडळ लोगो)</label>
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-500 p-0.5 bg-white flex-shrink-0 flex items-center justify-center">
-                <img src={logoPreview || settings?.logoUrl || '/logo.jpeg'} alt="Logo" className="w-full h-full object-contain rounded-full" />
+                <img src={logoPreview || settings?.logoUrl || '/logo.png'} alt="Logo" className="w-full h-full object-contain rounded-full" />
               </div>
               <div className="flex-1">
                 <input

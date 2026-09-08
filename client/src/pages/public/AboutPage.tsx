@@ -26,7 +26,7 @@ export const AboutPage: React.FC = () => {
       <div className="bg-white rounded-3xl p-8 sm:p-12 border border-orange-100 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div className="lg:col-span-4 flex justify-center">
           <div className="w-56 h-56 rounded-full overflow-hidden border-4 border-orange-500 p-1 shadow-lg bg-white">
-            <img src={settings?.logoUrl || '/logo.jpeg'} alt="Logo" className="w-full h-full object-contain rounded-full" />
+            <img src={settings?.logoUrl || '/logo.png'} alt="Logo" className="w-full h-full object-contain rounded-full" />
           </div>
         </div>
         <div className="lg:col-span-8 space-y-4 text-gray-700 leading-relaxed">

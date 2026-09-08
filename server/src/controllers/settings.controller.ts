@@ -4,6 +4,7 @@ import { prisma } from '../config/db.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 import { AuthRequest } from '../middleware/auth.js';
 import { logAuditAction } from '../services/audit.service.js';
+import { StorageService } from '../services/storage.service.js';
 
 const settingsSchema = z.object({
   mandalName: z.string().min(2),
@@ -50,10 +51,10 @@ export async function updateSettings(req: AuthRequest, res: Response) {
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
     if (files?.logo?.[0]) {
-      logoUrl = `/uploads/branding/${files.logo[0].filename}`;
+      logoUrl = await StorageService.uploadFile(files.logo[0], 'branding');
     }
     if (files?.mainImage?.[0]) {
-      mainImageUrl = `/uploads/branding/${files.mainImage[0].filename}`;
+      mainImageUrl = await StorageService.uploadFile(files.mainImage[0], 'branding');
     }
 
     const updated = await prisma.siteSettings.update({

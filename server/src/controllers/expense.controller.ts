@@ -5,6 +5,7 @@ import { sendSuccess, sendError } from '../utils/response.js';
 import { AuthRequest } from '../middleware/auth.js';
 import { LedgerService } from '../services/ledger.service.js';
 import { logAuditAction } from '../services/audit.service.js';
+import { StorageService } from '../services/storage.service.js';
 import { PaymentMethod, RecordStatus, TransactionType, SourceType } from '@prisma/client';
 
 const expenseSchema = z.object({
@@ -77,7 +78,7 @@ export async function createExpense(req: AuthRequest, res: Response) {
     let receiptUrl = null;
 
     if (req.file) {
-      receiptUrl = `/uploads/receipts/${req.file.filename}`;
+      receiptUrl = await StorageService.uploadFile(req.file, 'receipts');
     }
 
     const category = await prisma.expenseCategory.findUnique({ where: { id: data.categoryId } });

@@ -4,6 +4,7 @@ import { prisma } from '../config/db.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 import { AuthRequest } from '../middleware/auth.js';
 import { logAuditAction } from '../services/audit.service.js';
+import { StorageService } from '../services/storage.service.js';
 
 const memberSchema = z.object({
   groupId: z.coerce.number().int().positive(),
@@ -109,7 +110,7 @@ export async function createMember(req: AuthRequest, res: Response) {
     let photoUrl = null;
 
     if (req.file) {
-      photoUrl = `/uploads/members/${req.file.filename}`;
+      photoUrl = await StorageService.uploadFile(req.file, 'members');
     }
 
     const member = await prisma.member.create({
@@ -154,7 +155,7 @@ export async function updateMember(req: AuthRequest, res: Response) {
     let photoUrl = existing.photoUrl;
 
     if (req.file) {
-      photoUrl = `/uploads/members/${req.file.filename}`;
+      photoUrl = await StorageService.uploadFile(req.file, 'members');
     }
 
     const updated = await prisma.member.update({

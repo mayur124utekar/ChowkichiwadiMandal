@@ -4,6 +4,7 @@ import { prisma } from '../config/db.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 import { AuthRequest } from '../middleware/auth.js';
 import { logAuditAction } from '../services/audit.service.js';
+import { StorageService } from '../services/storage.service.js';
 
 const meetingSchema = z.object({
   meetingTitle: z.string().min(2),
@@ -50,7 +51,7 @@ export async function createMeeting(req: AuthRequest, res: Response) {
     let minutesFileUrl = null;
 
     if (req.file) {
-      minutesFileUrl = `/uploads/meetings/${req.file.filename}`;
+      minutesFileUrl = await StorageService.uploadFile(req.file, 'meetings');
     }
 
     const meeting = await prisma.meeting.create({
@@ -92,7 +93,7 @@ export async function updateMeeting(req: AuthRequest, res: Response) {
     let minutesFileUrl = existing.minutesFileUrl;
 
     if (req.file) {
-      minutesFileUrl = `/uploads/meetings/${req.file.filename}`;
+      minutesFileUrl = await StorageService.uploadFile(req.file, 'meetings');
     }
 
     const updated = await prisma.meeting.update({

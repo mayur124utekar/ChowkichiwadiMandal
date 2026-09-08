@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { PublicAPI } from '../../api/client.js';
 import { Member, Event, Meeting } from '../../types/index.js';
+import { MemberAvatar } from '../../components/MemberAvatar.js';
 
 export const Home: React.FC = () => {
   const [data, setData] = useState<{
@@ -259,18 +260,12 @@ export const Home: React.FC = () => {
               key={member.id}
               className="bg-white rounded-2xl p-4 sm:p-5 border border-orange-100/80 shadow-sm hover:shadow-md transition text-center flex flex-col items-center group"
             >
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-orange-200 group-hover:border-orange-500 transition-colors p-1 bg-orange-50 mb-3 flex items-center justify-center">
-                {member.photoUrl ? (
-                  <img
-                    src={member.photoUrl}
-                    alt={member.fullNameMarathi || member.fullName}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-tr from-orange-100 to-amber-100 rounded-full flex items-center justify-center text-orange-700 font-bold text-2xl">
-                    {(member.fullNameMarathi || member.fullName).charAt(0)}
-                  </div>
-                )}
+              <div className="p-1 rounded-full border-2 border-orange-200 group-hover:border-orange-500 transition-colors bg-orange-50 mb-3">
+                <MemberAvatar
+                  photoUrl={member.photoUrl}
+                  name={member.fullNameMarathi || member.fullName}
+                  size="lg"
+                />
               </div>
 
               <h3 className="font-bold text-gray-900 text-sm sm:text-base leading-snug">

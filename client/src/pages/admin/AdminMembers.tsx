@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { MembersAPI } from '../../api/client.js';
 import { Member, Group, Position } from '../../types/index.js';
+import { MemberAvatar } from '../../components/MemberAvatar.js';
 
 export const AdminMembers: React.FC = () => {
   const [members, setMembers] = useState<Member[]>([]);
@@ -230,13 +231,11 @@ export const AdminMembers: React.FC = () => {
                 {members.map((m) => (
                   <tr key={m.id} className="hover:bg-slate-50/70 transition">
                     <td className="py-4 px-6 flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden bg-orange-50 border border-orange-200 flex-shrink-0 flex items-center justify-center font-bold text-orange-700">
-                        {m.photoUrl ? (
-                          <img src={m.photoUrl} alt={m.fullName} className="w-full h-full object-cover" />
-                        ) : (
-                          m.fullName.charAt(0)
-                        )}
-                      </div>
+                      <MemberAvatar
+                        photoUrl={m.photoUrl}
+                        name={m.fullNameMarathi || m.fullName}
+                        size="sm"
+                      />
                       <div>
                         <div className="font-bold text-slate-900">{m.fullNameMarathi || m.fullName}</div>
                         <div className="text-[11px] text-slate-400 font-normal">{m.fullName}</div>

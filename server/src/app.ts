@@ -10,12 +10,14 @@ import { apiRouter } from './routes/index.js';
 import { errorHandler } from './middleware/error.js';
 
 export const app = express();
+app.disable('x-powered-by');
 
 // Security Headers
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     contentSecurityPolicy: false,
+    hidePoweredBy: false,
   })
 );
 
@@ -61,34 +63,36 @@ app.get('/api/health', (req, res) => {
 app.use('/api/v1', apiRouter);
 app.use('/v1', apiRouter);
 app.use('/api', apiRouter);
-
-// Robust client static build directory resolution (Single Site hosting)
-const clientDistDir = fs.existsSync(path.resolve(process.cwd(), 'client/dist'))
-  ? path.resolve(process.cwd(), 'client/dist')
-  : path.resolve(process.cwd(), '../client/dist');
-
-if (fs.existsSync(clientDistDir)) {
-  app.use(express.static(clientDistDir));
-
-  // SPA Fallback: serve index.html for any frontend route
-  app.get('*', (req, res, next) => {
-    if (
-      req.path.startsWith('/api') || 
-      req.path.startsWith('/uploads') || 
-      req.path.startsWith('/v1') ||
-      req.path.startsWith('/auth') ||
-      req.path.startsWith('/public')
-    ) {
-      return next();
-    }
-    res.sendFile(path.join(clientDistDir, 'index.html'));
-  });
-}
-
-// Direct mount fallback for subpaths in serverless
 app.use('/', apiRouter);
+
+// SPA Static Build serving for standalone server only (NOT inside Vercel serverless lambda)
+if (!process.env.VERCEL) {
+  const clientDistDir = fs.existsSync(path.resolve(process.cwd(), 'client/dist'))
+    ? path.resolve(process.cwd(), 'client/dist')
+    : path.resolve(process.cwd(), '../client/dist');
+
+  if (fs.existsSync(clientDistDir)) {
+    app.use(express.static(clientDistDir));
+
+    app.get('*', (req, res, next) => {
+      if (
+        req.path.startsWith('/api') || 
+        req.path.startsWith('/uploads') || 
+        req.path.startsWith('/v1') ||
+        req.path.startsWith('/auth') ||
+        req.path.startsWith('/public')
+      ) {
+        return next();
+      }
+      res.sendFile(path.join(clientDistDir, 'index.html'));
+    });
+  }
+}
 
 // Centralized error handler
 app.use(errorHandler);
 
-export default app;
+export default function handler(req: any, res: any) {
+  return app(req, res);
+}
+

@@ -1,3 +1,4 @@
+import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -44474,10 +44475,12 @@ function errorHandler(err, req, res, next) {
 
 // server/src/app.ts
 var app = (0, import_express2.default)();
+app.disable("x-powered-by");
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    contentSecurityPolicy: false
+    contentSecurityPolicy: false,
+    hidePoweredBy: false
   })
 );
 app.use(
@@ -44508,22 +44511,26 @@ app.get("/api/health", (req, res) => {
 app.use("/api/v1", apiRouter);
 app.use("/v1", apiRouter);
 app.use("/api", apiRouter);
-var clientDistDir = fs2.existsSync(path2.resolve(process.cwd(), "client/dist")) ? path2.resolve(process.cwd(), "client/dist") : path2.resolve(process.cwd(), "../client/dist");
-if (fs2.existsSync(clientDistDir)) {
-  app.use(import_express2.default.static(clientDistDir));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api") || req.path.startsWith("/uploads") || req.path.startsWith("/v1") || req.path.startsWith("/auth") || req.path.startsWith("/public")) {
-      return next();
-    }
-    res.sendFile(path2.join(clientDistDir, "index.html"));
-  });
-}
 app.use("/", apiRouter);
+if (!process.env.VERCEL) {
+  const clientDistDir = fs2.existsSync(path2.resolve(process.cwd(), "client/dist")) ? path2.resolve(process.cwd(), "client/dist") : path2.resolve(process.cwd(), "../client/dist");
+  if (fs2.existsSync(clientDistDir)) {
+    app.use(import_express2.default.static(clientDistDir));
+    app.get("*", (req, res, next) => {
+      if (req.path.startsWith("/api") || req.path.startsWith("/uploads") || req.path.startsWith("/v1") || req.path.startsWith("/auth") || req.path.startsWith("/public")) {
+        return next();
+      }
+      res.sendFile(path2.join(clientDistDir, "index.html"));
+    });
+  }
+}
 app.use(errorHandler);
-var app_default = app;
+function handler(req, res) {
+  return app(req, res);
+}
 export {
   app,
-  app_default as default
+  handler as default
 };
 /*! Bundled license information:
 

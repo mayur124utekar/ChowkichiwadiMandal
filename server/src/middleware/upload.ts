@@ -3,15 +3,22 @@ import path from 'path';
 import fs from 'fs';
 import { Request } from 'express';
 
-const uploadBaseDir = path.resolve(process.cwd(), process.env.UPLOAD_DIR || '../uploads');
+const isVercel = Boolean(process.env.VERCEL);
+const uploadBaseDir = isVercel
+  ? path.join('/tmp', 'uploads')
+  : path.resolve(process.cwd(), process.env.UPLOAD_DIR || 'uploads');
 
-// Ensure upload subdirectories exist
-['members', 'receipts', 'meetings', 'branding'].forEach((sub) => {
-  const dir = path.join(uploadBaseDir, sub);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+// Ensure upload subdirectories exist safely without crashing on read-only environments
+try {
+  ['members', 'receipts', 'meetings', 'branding'].forEach((sub) => {
+    const dir = path.join(uploadBaseDir, sub);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+} catch (err) {
+  console.warn('Upload directory creation skipped (read-only filesystem):', err);
+}
 
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb) => {

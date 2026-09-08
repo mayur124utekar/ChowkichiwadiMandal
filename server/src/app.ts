@@ -45,11 +45,16 @@ app.use('/v1/auth/login', authLimiter);
 app.use('/auth/login', authLimiter);
 
 // Robust upload directory resolution
-const uploadBaseDir = fs.existsSync(path.resolve(process.cwd(), 'uploads'))
+const isVercel = Boolean(process.env.VERCEL);
+const uploadBaseDir = isVercel
+  ? path.join('/tmp', 'uploads')
+  : fs.existsSync(path.resolve(process.cwd(), 'uploads'))
   ? path.resolve(process.cwd(), 'uploads')
   : path.resolve(process.cwd(), '../uploads');
 
-app.use('/uploads', express.static(uploadBaseDir));
+if (fs.existsSync(uploadBaseDir)) {
+  app.use('/uploads', express.static(uploadBaseDir));
+}
 
 // Health check endpoints
 app.get('/health', (req, res) => {
@@ -92,7 +97,5 @@ if (!process.env.VERCEL) {
 // Centralized error handler
 app.use(errorHandler);
 
-export default function handler(req: any, res: any) {
-  return app(req, res);
-}
+export default app;
 

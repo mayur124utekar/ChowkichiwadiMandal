@@ -38691,13 +38691,18 @@ function requireRole(allowedRoles) {
 var import_multer = __toESM(require_multer());
 import path from "path";
 import fs from "fs";
-var uploadBaseDir = path.resolve(process.cwd(), process.env.UPLOAD_DIR || "../uploads");
-["members", "receipts", "meetings", "branding"].forEach((sub) => {
-  const dir = path.join(uploadBaseDir, sub);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+var isVercel = Boolean(process.env.VERCEL);
+var uploadBaseDir = isVercel ? path.join("/tmp", "uploads") : path.resolve(process.cwd(), process.env.UPLOAD_DIR || "uploads");
+try {
+  ["members", "receipts", "meetings", "branding"].forEach((sub) => {
+    const dir = path.join(uploadBaseDir, sub);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+} catch (err) {
+  console.warn("Upload directory creation skipped (read-only filesystem):", err);
+}
 var storage = import_multer.default.diskStorage({
   destination: (req, file, cb) => {
     let folder = "members";
@@ -44508,8 +44513,11 @@ var authLimiter = lib_default({
 app.use("/api/v1/auth/login", authLimiter);
 app.use("/v1/auth/login", authLimiter);
 app.use("/auth/login", authLimiter);
-var uploadBaseDir2 = fs2.existsSync(path2.resolve(process.cwd(), "uploads")) ? path2.resolve(process.cwd(), "uploads") : path2.resolve(process.cwd(), "../uploads");
-app.use("/uploads", import_express2.default.static(uploadBaseDir2));
+var isVercel2 = Boolean(process.env.VERCEL);
+var uploadBaseDir2 = isVercel2 ? path2.join("/tmp", "uploads") : fs2.existsSync(path2.resolve(process.cwd(), "uploads")) ? path2.resolve(process.cwd(), "uploads") : path2.resolve(process.cwd(), "../uploads");
+if (fs2.existsSync(uploadBaseDir2)) {
+  app.use("/uploads", import_express2.default.static(uploadBaseDir2));
+}
 app.get("/health", (req, res) => {
   res.json({ status: "ok", time: /* @__PURE__ */ new Date(), app: "\u091A\u094C\u0915\u0940\u091A\u0940\u0935\u093E\u0921\u0940 \u0905\u0927\u094D\u092F\u093E\u0924\u094D\u092E \u0917\u094D\u0930\u093E\u092E\u0938\u094D\u0925 \u092E\u0902\u0921\u0933" });
 });
@@ -44533,12 +44541,10 @@ if (!process.env.VERCEL) {
   }
 }
 app.use(errorHandler);
-function handler(req, res) {
-  return app(req, res);
-}
+var app_default = app;
 export {
   app,
-  handler as default
+  app_default as default
 };
 /*! Bundled license information:
 

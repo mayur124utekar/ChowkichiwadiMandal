@@ -60,16 +60,6 @@ export const MembersPage: React.FC = () => {
             सर्व सदस्य ({members.length})
           </button>
           <button
-            onClick={() => setSelectedGroup('NORMAL')}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
-              selectedGroup === 'NORMAL'
-                ? 'bg-orange-600 text-white shadow-sm'
-                : 'bg-orange-50 text-gray-700 hover:bg-orange-100'
-            }`}
-          >
-            सामान्य ग्रुप
-          </button>
-          <button
             onClick={() => setSelectedGroup('YOUTH')}
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
               selectedGroup === 'YOUTH'
@@ -78,6 +68,16 @@ export const MembersPage: React.FC = () => {
             }`}
           >
             युवा ग्रुप (युवा मंडळ)
+          </button>
+          <button
+            onClick={() => setSelectedGroup('NORMAL')}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
+              selectedGroup === 'NORMAL'
+                ? 'bg-orange-600 text-white shadow-sm'
+                : 'bg-orange-50 text-gray-700 hover:bg-orange-100'
+            }`}
+          >
+            सामान्य ग्रुप
           </button>
         </div>
 

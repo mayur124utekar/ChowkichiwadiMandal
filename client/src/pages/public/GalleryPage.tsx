@@ -19,7 +19,7 @@ export const GalleryPage: React.FC = () => {
     },
     {
       title: 'श्री गणेशोत्सव मंडप व आरती',
-      desc: 'युवा ग्रुप व ग्रामस्थ गणेशोत्सव',
+      desc: 'युवा मंडळ व ग्रामस्थ गणेशोत्सव',
       url: settings?.logoUrl || '/logo.png',
     }
   ];

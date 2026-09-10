@@ -1,4 +1,4 @@
-# चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ, साखर (युवा ग्रुप)
+# चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ, साखर (युवा मंडळ)
 ### Production Web Application & Community Financial Management Platform
 
 > **नोंदणी क्र.**: महाराष्ट्र/०१३/२०२०/रत्ना. (महाराष्ट्र राज्य)  
@@ -9,7 +9,7 @@
 
 ## 🌟 Overview
 
-A full-stack, production-grade web application built specifically for **चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ, साखर चौकीचीवाडी (युवा ग्रुप)**. The application serves two core experiences:
+A full-stack, production-grade web application built specifically for **चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ, साखर चौकीचीवाडी (युवा मंडळ)**. The application serves two core experiences:
 
 1. **सार्वजनिक मराठी पोर्टल (Public Marathi Portal)**:
    - High-performance, mobile-first Devanagari typography (`Noto Sans Devanagari`).

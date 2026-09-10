@@ -41,7 +41,7 @@ export const MembersPage: React.FC = () => {
           मंडळाचे सन्माननीय सदस्य
         </h1>
         <p className="text-gray-600 text-sm sm:text-base">
-          चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळाच्या सामान्य व युवा ग्रुपचे सर्व पदाधिकारी व सदस्य.
+          चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळाच्या सामान्य व युवा मंडळाचे सर्व पदाधिकारी व सदस्य.
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export const MembersPage: React.FC = () => {
                 : 'bg-orange-50 text-gray-700 hover:bg-orange-100'
             }`}
           >
-            युवा ग्रुप (युवा मंडळ)
+            युवा मंडळ
           </button>
           <button
             onClick={() => setSelectedGroup('NORMAL')}

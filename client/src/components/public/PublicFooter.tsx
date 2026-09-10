@@ -20,7 +20,7 @@ export const PublicFooter: React.FC<Props> = ({ settings }) => {
               </div>
               <div>
                 <h3 className="font-bold text-base text-orange-400">चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ</h3>
-                <p className="text-xs text-stone-300">साखर चौकीचीवाडी (युवा ग्रुप)</p>
+                <p className="text-xs text-stone-300">साखर चौकीचीवाडी (युवा मंडळ)</p>
               </div>
             </div>
             <p className="text-sm text-stone-300 leading-relaxed">
@@ -122,6 +122,9 @@ export const PublicFooter: React.FC<Props> = ({ settings }) => {
         {/* Bottom bar */}
         <div className="pt-8 mt-8 border-t border-stone-800 text-center text-xs text-stone-400 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p>© {new Date().getFullYear()} {settings?.mandalNameMarathi || 'चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ'}. सर्व हक्क राखीव.</p>
+          <p className="text-amber-400 font-medium">
+            संकल्पना :- सागर रेवणे व मयूर उतेकर
+          </p>
           <p className="flex items-center space-x-1">
             <span>श्रद्धा आणि सबुरी • श्री साईबाबा प्रसन्न</span>
           </p>

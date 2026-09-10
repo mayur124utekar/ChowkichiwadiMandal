@@ -38,6 +38,13 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
             <span className="bg-white/20 px-2 py-0.5 rounded text-[11px] font-semibold">अधिकृत</span>
             <span>{settings?.regNumberMarathi || 'रजि. क्र.: महाराष्ट्र/०१३/२०२०/रत्ना. (महाराष्ट्र राज्य)'}</span>
           </div>
+
+          <div className="hidden md:flex items-center space-x-1 text-amber-100 font-medium">
+            <span className="bg-black/15 px-2.5 py-0.5 rounded text-[11px] tracking-wide">
+              संकल्पना :- सागर रेवणे व मयूर उतेकर
+            </span>
+          </div>
+
           <div className="flex items-center space-x-4 text-orange-100">
             {settings?.primaryPhone && (
               <a href={`tel:${settings.primaryPhone}`} className="flex items-center space-x-1 hover:text-white transition">
@@ -55,9 +62,9 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center min-h-[5rem] py-2">
           {/* Logo & Mandal Title */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3 group py-1">
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500 shadow-md bg-white flex-shrink-0 flex items-center justify-center p-0.5">
               <img
                 src={settings?.logoUrl || '/logo.png'}
@@ -69,12 +76,18 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
               />
             </div>
             <div>
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight group-hover:text-orange-600 transition">
+              <h1 className="text-base sm:text-xl font-bold text-gray-900 leading-tight group-hover:text-orange-600 transition">
                 {settings?.mandalNameMarathi || 'चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ'}
               </h1>
-              <p className="text-xs text-orange-600 font-semibold tracking-wide">
-                साखर चौकीचीवाडी (युवा ग्रुप) • ता. खेड, जि. रत्नागिरी
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-x-2 text-xs">
+                <span className="text-orange-600 font-semibold tracking-wide">
+                  साखर चौकीचीवाडी (युवा मंडळ) • ता. खेड, जि. रत्नागिरी
+                </span>
+                <span className="hidden sm:inline text-orange-300">•</span>
+                <span className="text-[11px] text-amber-800 font-medium">
+                  संकल्पना :- सागर रेवणे व मयूर उतेकर
+                </span>
+              </div>
             </div>
           </Link>
 
@@ -112,6 +125,11 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-orange-100 bg-white shadow-lg animate-in slide-in-from-top-2 duration-200">
           <div className="px-4 pt-2 pb-6 space-y-1">
+            <div className="mb-3 px-3 py-1.5 bg-orange-50 rounded-lg text-center">
+              <p className="text-xs font-semibold text-amber-900">
+                संकल्पना :- सागर रेवणे व मयूर उतेकर
+              </p>
+            </div>
             {navLinks.map((link) => (
               <Link
                 key={link.path}

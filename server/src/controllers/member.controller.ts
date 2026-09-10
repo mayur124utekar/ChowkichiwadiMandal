@@ -6,15 +6,17 @@ import { AuthRequest } from '../middleware/auth.js';
 import { logAuditAction } from '../services/audit.service.js';
 import { StorageService } from '../services/storage.service.js';
 
+const emptyStringToNull = z.literal('').transform(() => null);
+
 const memberSchema = z.object({
   groupId: z.coerce.number().int().positive(),
-  positionId: z.coerce.number().int().positive().nullable().optional(),
+  positionId: z.coerce.number().int().positive().nullable().optional().or(emptyStringToNull),
   fullName: z.string().min(2),
-  fullNameMarathi: z.string().optional().nullable(),
-  mobileNumber: z.string().optional().nullable(),
-  joiningDate: z.string().optional().nullable(),
-  bio: z.string().optional().nullable(),
-  bioMarathi: z.string().optional().nullable(),
+  fullNameMarathi: z.string().optional().nullable().transform(v => (v === '' ? null : v)),
+  mobileNumber: z.string().optional().nullable().transform(v => (v === '' ? null : v)),
+  joiningDate: z.string().optional().nullable().transform(v => (v === '' ? null : v)),
+  bio: z.string().optional().nullable().transform(v => (v === '' ? null : v)),
+  bioMarathi: z.string().optional().nullable().transform(v => (v === '' ? null : v)),
   displayOrder: z.coerce.number().int().default(0),
   isActive: z.coerce.boolean().default(true),
   isPublic: z.coerce.boolean().default(true),

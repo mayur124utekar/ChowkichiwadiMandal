@@ -142,10 +142,10 @@ export const AdminMembers: React.FC = () => {
       data.append('fullName', formData.fullName);
       data.append('fullNameMarathi', formData.fullNameMarathi || formData.fullName);
       data.append('groupId', formData.groupId);
-      if (formData.positionId) data.append('positionId', formData.positionId);
-      if (formData.mobileNumber) data.append('mobileNumber', formData.mobileNumber);
-      if (formData.joiningDate) data.append('joiningDate', formData.joiningDate);
-      if (formData.bioMarathi) data.append('bioMarathi', formData.bioMarathi);
+      data.append('positionId', formData.positionId || '');
+      data.append('mobileNumber', formData.mobileNumber || '');
+      data.append('joiningDate', formData.joiningDate || '');
+      data.append('bioMarathi', formData.bioMarathi || '');
       data.append('displayOrder', String(formData.displayOrder));
       data.append('isActive', String(formData.isActive));
       data.append('isPublic', String(formData.isPublic));

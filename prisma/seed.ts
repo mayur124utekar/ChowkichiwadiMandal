@@ -56,7 +56,7 @@ async function main() {
     update: { displayOrder: 1 },
     create: {
       name: 'Youth Group',
-      nameMarathi: 'युवा ग्रुप',
+      nameMarathi: 'युवा मंडळ',
       code: 'YOUTH',
       description: 'ग्रामस्थ युवा सदस्य गट',
       displayOrder: 1,

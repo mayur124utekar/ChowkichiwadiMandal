@@ -78,7 +78,7 @@ export const Home: React.FC = () => {
               </h1>
               
               <p className="text-lg sm:text-xl text-orange-700 font-medium">
-                साखर चौकीचीवाडी (युवा ग्रुप) • ता. खेड, जि. रत्नागिरी
+                साखर चौकीचीवाडी (युवा मंडळ) • ता. खेड, जि. रत्नागिरी
               </p>
 
               <p className="text-gray-600 text-base sm:text-lg max-w-2xl leading-relaxed">

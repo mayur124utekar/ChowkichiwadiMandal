@@ -75,7 +75,7 @@ export const AboutPage: React.FC = () => {
             </li>
             <li className="flex items-start space-x-2">
               <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-              <span><strong>युवा ग्रुप:</strong> उत्साही व सामाजिक कार्यात तत्पर युवक गट.</span>
+              <span><strong>युवा मंडळ:</strong> उत्साही व सामाजिक कार्यात तत्पर युवक गट.</span>
             </li>
             <li className="flex items-start space-x-2">
               <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />

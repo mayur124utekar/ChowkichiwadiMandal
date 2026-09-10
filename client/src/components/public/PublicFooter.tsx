@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MapPin, Phone, Mail, ShieldCheck } from 'lucide-react';
+import { Heart, MapPin, Phone, Mail, ShieldCheck, Instagram } from 'lucide-react';
 import { SiteSettings } from '../../types/index.js';
 
 interface Props {
@@ -30,6 +30,15 @@ export const PublicFooter: React.FC<Props> = ({ settings }) => {
               <ShieldCheck className="w-4 h-4 text-orange-400 flex-shrink-0" />
               <span>{settings?.regNumberMarathi || 'रजि. क्र.: महाराष्ट्र/०१३/२०२०/रत्ना.'}</span>
             </div>
+            <a
+              href="https://www.instagram.com/adyatm_mandal_sakhar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-600 via-purple-600 to-orange-500 hover:opacity-90 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition shadow-md"
+            >
+              <Instagram className="w-4 h-4" />
+              <span>Instagram: @adyatm_mandal_sakhar</span>
+            </a>
           </div>
 
           {/* Col 2: Quick Links */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Lock, HeartHandshake } from 'lucide-react';
+import { Menu, X, Phone, Lock, HeartHandshake, Instagram } from 'lucide-react';
 import { SiteSettings } from '../../types/index.js';
 
 interface Props {
@@ -45,7 +45,17 @@ export const PublicHeader: React.FC<Props> = ({ settings }) => {
             </span>
           </div>
 
-          <div className="flex items-center space-x-4 text-orange-100">
+          <div className="flex items-center space-x-3 text-orange-100">
+            <a
+              href="https://www.instagram.com/adyatm_mandal_sakhar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1 hover:text-white transition bg-pink-600/60 hover:bg-pink-600 px-2 py-0.5 rounded text-[11px] font-medium"
+              title="Instagram Profile"
+            >
+              <Instagram className="w-3 h-3" />
+              <span className="hidden sm:inline">Instagram</span>
+            </a>
             {settings?.primaryPhone && (
               <a href={`tel:${settings.primaryPhone}`} className="flex items-center space-x-1 hover:text-white transition">
                 <Phone className="w-3.5 h-3.5" />

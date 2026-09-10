@@ -3,7 +3,6 @@ import {
   Image as ImageIcon, 
   Instagram, 
   ExternalLink, 
-  Layers, 
   Share2, 
   X, 
   ChevronLeft, 
@@ -11,7 +10,6 @@ import {
   Download, 
   Sparkles,
   Maximize2,
-  Tag,
   CheckCircle2
 } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
@@ -19,17 +17,12 @@ import { SiteSettings } from '../../types/index.js';
 
 export interface GalleryPhotoItem {
   id: string;
-  title: string;
-  titleEn: string;
-  descriptionMarathi: string;
   imageUrl: string;
   category: string;
-  date: string;
 }
 
 export const GalleryPage: React.FC = () => {
   const { settings } = useOutletContext<{ settings?: SiteSettings }>();
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
   const [copiedGeneral, setCopiedGeneral] = useState<boolean>(false);
@@ -37,106 +30,59 @@ export const GalleryPage: React.FC = () => {
   const instagramHandle = 'adyatm_mandal_sakhar';
   const instagramProfileUrl = `https://www.instagram.com/${instagramHandle}/`;
 
-  // Curated photo items hosted permanently on Vercel Blob Storage
+  // Curated photo items hosted on Vercel Blob Storage
   const galleryPhotos: GalleryPhotoItem[] = [
     {
       id: 'photo-1',
-      title: 'श्री साईबाबा पालखी सोहळा व मिरवणूक',
-      titleEn: 'Shree Sai Baba Palkhi Sohala & Procession',
-      descriptionMarathi: 'चौकीचीवाडी ग्रामस्थांचा भक्तीमय वातावरणात पार पडलेला श्री साईबाबा पालखी सोहळा व मिरवणूक.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-36-pm-1-.jpeg',
-      category: 'पालखी सोहळा',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-2',
-      title: 'भजन, कीर्तन व अध्यात्मिक सत्संग',
-      titleEn: 'Bhajan, Kirtan & Spiritual Gathering',
-      descriptionMarathi: 'गावातील भजनी मंडळ व भाविकांचा एकत्रित भक्तीमय भजन व कीर्तन सोहळा.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-36-pm-ds.jpeg',
-      category: 'भजन व आरती',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-3',
-      title: 'श्री गणेशोत्सव मंडप प्रतिष्ठापना व आरती',
-      titleEn: 'Shree Ganeshotsav Celebrations & Aarti',
-      descriptionMarathi: 'वार्षिक गणेशोत्सवातील बाप्पाची मनमोहक मूर्ती, मंडप सजावट व महाआरती सोहळा.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-36-pm-e.jpeg',
-      category: 'गणेशोत्सव',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-4',
-      title: 'ग्रामस्थ मंडळ व युवा समिती एकत्रिकरण',
-      titleEn: 'Mandal Gramastha & Youth Assembly',
-      descriptionMarathi: 'चौकीचीवाडी ग्रामस्थ व युवा मंडळाचे गाव विकासासाठी एकत्रित संघटन आणि बैठक.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-36-pm.jpeg',
-      category: 'ग्रामस्थ मंडळ',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-5',
-      title: 'मंदिर उत्सव व धार्मिक पूजा विधी',
-      titleEn: 'Temple Festival & Sacred Rituals',
-      descriptionMarathi: 'मंदिरातील पवित्र धार्मिक विधी, होम-हवन व मंगल पूजा सोहळा.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-37-pm-1-.jpeg',
-      category: 'मंदिर व पूजा',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-6',
-      title: 'वार्षिक उत्सव व महाप्रसाद सोहळा',
-      titleEn: 'Annual Utsav & Mahaprasad Gathering',
-      descriptionMarathi: 'उत्सवाच्या निमित्ताने सर्व भाविक आणि ग्रामस्थांसाठी आयोजित महाप्रसाद व सेवा.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-37-pm-2-.jpeg',
       category: 'उत्सव क्षण',
-      date: '२०२६',
     },
     {
       id: 'photo-7',
-      title: 'ग्रामस्थ बैठक व सामाजिक नियोजन',
-      titleEn: 'Gramastha Sabha & Community Discussion',
-      descriptionMarathi: 'मंडळाच्या वार्षिक सभा, ठराव आणि सामाजिक नियोजन कार्यक्रम.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-37-pm.jpeg',
-      category: 'ग्रामस्थ मंडळ',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-8',
-      title: 'श्री साई पालखी आगमन व स्वागत सोहळा',
-      titleEn: 'Sai Palkhi Welcoming Moments',
-      descriptionMarathi: 'पालखीचे गावात उत्साहात स्वागत, फटाक्यांची आतषबाजी आणि जयघोष.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-38-pm-1-.jpeg',
-      category: 'पालखी सोहळा',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
     {
       id: 'photo-9',
-      title: 'उत्सव सजावट व मंडप रोषणाई',
-      titleEn: 'Festival Decoration & Illumination',
-      descriptionMarathi: 'सण-उत्सवानिमित्त केलेली आकर्षक विद्युत रोषणाई व मंडप सजावट.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-38-pm-2-.jpeg',
       category: 'उत्सव क्षण',
-      date: '२०२६',
     },
     {
       id: 'photo-10',
-      title: 'अखंड हरिनाम सप्ताह व सांस्कृतिक कार्यक्रम',
-      titleEn: 'Harinaam Saptah & Cultural Events',
-      descriptionMarathi: 'चौकीचीवाडी ग्रामस्थांचा पारंपारिक भक्ती सोहळा व सांस्कृतिक सादरीकरण.',
       imageUrl: 'https://6naqxz7ixq636nw8.public.blob.vercel-storage.com/gallery/whatsapp-image-2026-09-10-at-11-04-38-pm.jpeg',
-      category: 'भजन व आरती',
-      date: '२०२६',
+      category: 'उत्सव क्षण',
     },
   ];
-
-  // Extract unique categories for filtering
-  const categories = ['all', ...Array.from(new Set(galleryPhotos.map((p) => p.category)))];
-
-  const filteredPhotos = selectedCategory === 'all'
-    ? galleryPhotos
-    : galleryPhotos.filter((p) => p.category === selectedCategory);
 
   // Lightbox handlers
   const openLightbox = (index: number) => {
@@ -149,13 +95,13 @@ export const GalleryPage: React.FC = () => {
 
   const showNextPhoto = useCallback(() => {
     if (activePhotoIndex === null) return;
-    setActivePhotoIndex((prev) => ((prev! + 1) % filteredPhotos.length));
-  }, [activePhotoIndex, filteredPhotos.length]);
+    setActivePhotoIndex((prev) => ((prev! + 1) % galleryPhotos.length));
+  }, [activePhotoIndex, galleryPhotos.length]);
 
   const showPrevPhoto = useCallback(() => {
     if (activePhotoIndex === null) return;
-    setActivePhotoIndex((prev) => ((prev! - 1 + filteredPhotos.length) % filteredPhotos.length));
-  }, [activePhotoIndex, filteredPhotos.length]);
+    setActivePhotoIndex((prev) => ((prev! - 1 + galleryPhotos.length) % galleryPhotos.length));
+  }, [activePhotoIndex, galleryPhotos.length]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -183,7 +129,7 @@ export const GalleryPage: React.FC = () => {
     setTimeout(() => setCopiedGeneral(false), 2000);
   };
 
-  const currentPhoto = activePhotoIndex !== null ? filteredPhotos[activePhotoIndex] : null;
+  const currentPhoto = activePhotoIndex !== null ? galleryPhotos[activePhotoIndex] : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50/40 via-white to-amber-50/30 py-10 px-4 sm:px-6 lg:px-8 space-y-10">
@@ -199,7 +145,7 @@ export const GalleryPage: React.FC = () => {
             उत्सव व उपक्रम छायाचित्रे
           </h1>
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            चौकीचीवाडी ग्रामस्थ मंडळाच्या विविध धार्मिक उत्सव, श्री साईबाबा पालखी सोहळा, गणेशोत्सव आणि सामाजिक उपक्रमांचे क्षणचित्रे.
+            चौकीचीवाडी ग्रामस्थ मंडळाच्या विविध धार्मिक उत्सव, पालखी सोहळा व सामाजिक उपक्रमांचे क्षणचित्रे.
           </p>
         </div>
 
@@ -232,7 +178,7 @@ export const GalleryPage: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-sm text-pink-200 font-medium">
-                  {settings?.mandalNameMarathi || 'चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ - साखर'}
+                  {settings?.mandalNameMarathi || 'चौकीचीवाडी अध्याatm ग्रामस्थ मंडळ - साखर'}
                 </p>
                 <p className="text-xs text-stone-300 max-w-lg">
                   मंडळाचे सर्व चालू उत्सव, थेट व्हिडिओ, पालखी सोहळा व उपक्रमांच्या नवीन फोटोंसाठी आमच्या इन्स्टाग्राम खात्याला फॉलो करा.
@@ -263,103 +209,51 @@ export const GalleryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat;
-            const label = cat === 'all' ? 'सर्व छायाचित्रे (All)' : cat;
-            const count = cat === 'all' 
-              ? galleryPhotos.length 
-              : galleryPhotos.filter((p) => p.category === cat).length;
-
-            return (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`inline-flex items-center space-x-2 px-4 py-2 rounded-2xl text-xs sm:text-sm font-semibold transition-all ${
-                  isSelected
-                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md shadow-orange-500/20 scale-105'
-                    : 'bg-white text-gray-700 hover:bg-orange-50 border border-gray-200/80 shadow-sm'
-                }`}
-              >
-                <Tag className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-orange-500'}`} />
-                <span>{label}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-                  isSelected ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Photos Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredPhotos.map((photo, index) => (
+        {/* Photo Gallery Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
+          {galleryPhotos.map((photo, index) => (
             <div
               key={photo.id}
               onClick={() => openLightbox(index)}
-              className="group bg-white rounded-3xl overflow-hidden border border-orange-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer transform hover:-translate-y-1"
+              className="group relative bg-stone-900 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 aspect-[4/3] cursor-pointer transform hover:-translate-y-1.5 border border-orange-100/50"
             >
-              {/* Image Container */}
-              <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden">
-                <img
-                  src={photo.imageUrl}
-                  alt={photo.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
-                />
+              {/* Photo Image */}
+              <img
+                src={photo.imageUrl}
+                alt="उत्सव क्षण"
+                loading="lazy"
+                className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+              />
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 opacity-40 group-hover:opacity-90 transition-opacity duration-300"></div>
 
-                {/* Category Badge */}
-                <div className="absolute top-3 left-3 z-10">
-                  <span className="inline-flex items-center space-x-1 bg-black/60 backdrop-blur-md text-amber-300 border border-white/20 text-[11px] font-bold px-3 py-1 rounded-full shadow">
-                    <Sparkles className="w-3 h-3 text-amber-400" />
-                    <span>{photo.category}</span>
-                  </span>
-                </div>
-
-                {/* Quick Zoom Icon */}
-                <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full bg-black/60 backdrop-blur-md text-white hover:text-amber-400">
-                  <Maximize2 className="w-4 h-4" />
-                </div>
-
-                {/* Photo Number */}
-                <div className="absolute bottom-3 right-3 z-10 text-[11px] font-bold text-white/80 bg-black/50 backdrop-blur-sm px-2.5 py-0.5 rounded-full">
-                  {photo.date}
-                </div>
+              {/* Top Category Badge */}
+              <div className="absolute top-3.5 left-3.5 z-10">
+                <span className="inline-flex items-center space-x-1.5 bg-black/60 backdrop-blur-md text-amber-300 border border-white/20 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm">
+                  <Sparkles className="w-3 h-3 text-amber-400" />
+                  <span>{photo.category}</span>
+                </span>
               </div>
 
-              {/* Card Details */}
-              <div className="p-5 flex flex-col justify-between flex-grow space-y-3">
-                <div className="space-y-1.5">
-                  <h3 className="font-bold text-gray-900 text-base sm:text-lg leading-snug group-hover:text-orange-600 transition">
-                    {photo.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                    {photo.descriptionMarathi}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-orange-600 flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
+              {/* Hover actions & expand button */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div className="inline-flex items-center space-x-1.5 text-xs font-bold text-white bg-orange-600/90 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow">
+                    <Maximize2 className="w-3.5 h-3.5" />
                     <span>पूर्ण फोटो पहा</span>
-                    <span>→</span>
-                  </span>
+                  </div>
 
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       copyPhotoLink(photo.imageUrl, photo.id);
                     }}
-                    className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition"
-                    title="Copy Photo URL"
+                    className="p-2 bg-black/60 hover:bg-black/90 backdrop-blur-md text-white rounded-xl transition border border-white/20"
+                    title="Copy Photo Link"
                   >
                     {copiedLink === photo.id ? (
-                      <span className="text-[10px] text-green-600 font-bold">कॉपी केले!</span>
+                      <span className="text-[10px] text-green-400 font-bold px-1">कॉपी!</span>
                     ) : (
                       <Share2 className="w-4 h-4" />
                     )}
@@ -409,8 +303,8 @@ export const GalleryPage: React.FC = () => {
               <span className="bg-orange-500/20 text-orange-300 border border-orange-400/30 text-xs font-bold px-3 py-1 rounded-full">
                 {currentPhoto.category}
               </span>
-              <span className="text-xs text-gray-300">
-                {(activePhotoIndex ?? 0) + 1} / {filteredPhotos.length}
+              <span className="text-xs text-gray-300 font-medium">
+                {(activePhotoIndex ?? 0) + 1} / {galleryPhotos.length}
               </span>
             </div>
 
@@ -459,11 +353,11 @@ export const GalleryPage: React.FC = () => {
             </button>
 
             {/* Photo View */}
-            <div className="max-h-[70vh] sm:max-h-[75vh] w-full flex items-center justify-center p-2">
+            <div className="max-h-[75vh] sm:max-h-[82vh] w-full flex items-center justify-center p-2">
               <img
                 src={currentPhoto.imageUrl}
-                alt={currentPhoto.title}
-                className="max-h-[70vh] sm:max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl transition-transform"
+                alt="उत्सव क्षण"
+                className="max-h-[75vh] sm:max-h-[82vh] max-w-full object-contain rounded-2xl shadow-2xl transition-transform"
               />
             </div>
 
@@ -477,17 +371,12 @@ export const GalleryPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Bottom Caption Bar */}
+          {/* Bottom Bar */}
           <div 
-            className="w-full max-w-3xl mx-auto text-center text-white space-y-1 pb-2 z-10"
+            className="w-full max-w-3xl mx-auto text-center text-stone-400 text-xs pb-2 z-10"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-base sm:text-xl font-bold text-white">
-              {currentPhoto.title}
-            </h3>
-            <p className="text-xs sm:text-sm text-stone-300 max-w-2xl mx-auto">
-              {currentPhoto.descriptionMarathi}
-            </p>
+            <span>चौकीचीवाडी अध्यात्म ग्रामस्थ मंडळ - साखर</span>
           </div>
         </div>
       )}

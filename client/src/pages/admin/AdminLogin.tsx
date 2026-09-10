@@ -4,8 +4,8 @@ import { Lock, Mail, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.js';
 
 export const AdminLogin: React.FC = () => {
-  const [email, setEmail] = useState('admin@chowkichiwadi.org');
-  const [password, setPassword] = useState('Admin@12345');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
@@ -63,7 +63,7 @@ export const AdminLogin: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@chowkichiwadi.org"
+                  placeholder="admin@example.com"
                   className="w-full bg-slate-950 border border-slate-700 text-white rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent placeholder-slate-600"
                 />
               </div>

@@ -219,7 +219,7 @@ export async function getPublicExpenses(req: Request, res: Response) {
       return sendSuccess(res, { isHidden: true, expenses: [] });
     }
 
-    const { limit = '20', categoryId } = req.query;
+    const { limit = '1000', categoryId } = req.query;
 
     const whereClause: any = {
       status: RecordStatus.CONFIRMED,
@@ -233,7 +233,7 @@ export async function getPublicExpenses(req: Request, res: Response) {
 
     const expenses = await prisma.expense.findMany({
       where: whereClause,
-      orderBy: { expenseDate: 'desc' },
+      orderBy: [{ expenseDate: 'desc' }, { id: 'desc' }],
       take: parseInt(String(limit), 10),
       select: {
         id: true,
@@ -241,10 +241,12 @@ export async function getPublicExpenses(req: Request, res: Response) {
         title: true,
         amount: true,
         expenseDate: true,
+        paymentMethod: true,
         category: {
           select: {
             id: true,
             nameMarathi: true,
+            name: true,
           },
         },
       },

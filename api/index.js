@@ -86007,7 +86007,7 @@ async function getPublicExpenses(req, res) {
     if (!settings?.showExpenseListPublicly) {
       return sendSuccess(res, { isHidden: true, expenses: [] });
     }
-    const { limit = "20", categoryId } = req.query;
+    const { limit = "1000", categoryId } = req.query;
     const whereClause = {
       status: RecordStatus2.CONFIRMED,
       isPublic: true,
@@ -86018,7 +86018,7 @@ async function getPublicExpenses(req, res) {
     }
     const expenses = await prisma.expense.findMany({
       where: whereClause,
-      orderBy: { expenseDate: "desc" },
+      orderBy: [{ expenseDate: "desc" }, { id: "desc" }],
       take: parseInt(String(limit), 10),
       select: {
         id: true,
@@ -86026,10 +86026,12 @@ async function getPublicExpenses(req, res) {
         title: true,
         amount: true,
         expenseDate: true,
+        paymentMethod: true,
         category: {
           select: {
             id: true,
-            nameMarathi: true
+            nameMarathi: true,
+            name: true
           }
         }
       }
@@ -87678,15 +87680,16 @@ var StorageService = class {
 };
 
 // server/src/controllers/member.controller.ts
+var emptyStringToNull = external_exports.literal("").transform(() => null);
 var memberSchema = external_exports.object({
   groupId: external_exports.coerce.number().int().positive(),
-  positionId: external_exports.coerce.number().int().positive().nullable().optional(),
+  positionId: external_exports.coerce.number().int().positive().nullable().optional().or(emptyStringToNull),
   fullName: external_exports.string().min(2),
-  fullNameMarathi: external_exports.string().optional().nullable(),
-  mobileNumber: external_exports.string().optional().nullable(),
-  joiningDate: external_exports.string().optional().nullable(),
-  bio: external_exports.string().optional().nullable(),
-  bioMarathi: external_exports.string().optional().nullable(),
+  fullNameMarathi: external_exports.string().optional().nullable().transform((v) => v === "" ? null : v),
+  mobileNumber: external_exports.string().optional().nullable().transform((v) => v === "" ? null : v),
+  joiningDate: external_exports.string().optional().nullable().transform((v) => v === "" ? null : v),
+  bio: external_exports.string().optional().nullable().transform((v) => v === "" ? null : v),
+  bioMarathi: external_exports.string().optional().nullable().transform((v) => v === "" ? null : v),
   displayOrder: external_exports.coerce.number().int().default(0),
   isActive: external_exports.coerce.boolean().default(true),
   isPublic: external_exports.coerce.boolean().default(true)

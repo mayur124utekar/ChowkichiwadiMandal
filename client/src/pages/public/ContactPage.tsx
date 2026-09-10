@@ -114,7 +114,7 @@ export const ContactPage: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="उदा. श्री. रमेश कदम"
+                    placeholder="उदा. श्री. रमेश"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"

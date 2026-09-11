@@ -24,7 +24,7 @@ async function main() {
         logoUrl: '/uploads/branding/logo.jpeg',
         primaryColor: '#F97316',
         monthlyTargetAmount: 200.0,
-        openingBalance: 121657.0,
+        openingBalance: 124157.0,
         showMonthlySummaryPublicly: true,
         showFestivalSummaryPublicly: true,
         showExpenseListPublicly: true,

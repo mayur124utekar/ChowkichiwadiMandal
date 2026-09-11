@@ -129,7 +129,7 @@ export const MonthlyPage: React.FC = () => {
 
             <div className="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm">
               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">मंडळ निव्वळ शिल्लक निधी</div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-orange-600 mt-2">
+              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-2">
                 {formatCurrency(finance?.totalBalance || 0)}
               </div>
               <p className="text-xs text-gray-500 mt-1">सुरुवातीची शिल्लक + एकूण जमा - एकूण खर्च</p>
